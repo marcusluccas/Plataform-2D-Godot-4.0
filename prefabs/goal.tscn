@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=3 uid="uid://dpimdh3s35oer"]
+
+[ext_resource type="Script" path="res://scripts/goal.gd" id="1_cmg7h"]
+[ext_resource type="Texture2D" uid="uid://d2nw7gukidkqv" path="res://assets/Mini FX, Items & UI/Food Items/Sushi_Variety (16 x 16).png" id="1_g8h4a"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mae1s"]
+radius = 12.0416
+
+[sub_resource type="Animation" id="Animation_7v2ut"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -8)]
+}
+
+[sub_resource type="Animation" id="Animation_kohto"]
+resource_name = "float"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, -8), Vector2(0, -12)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_p7kri"]
+_data = {
+"RESET": SubResource("Animation_7v2ut"),
+"float": SubResource("Animation_kohto")
+}
+
+[node name="goal" type="Area2D"]
+collision_layer = 2
+script = ExtResource("1_cmg7h")
+
+[node name="sprite" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+texture = ExtResource("1_g8h4a")
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 16)
+
+[node name="collision" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -7)
+shape = SubResource("CircleShape2D_mae1s")
+
+[node name="anim" type="AnimationPlayer" parent="."]
+autoplay = "float"
+libraries = {
+"": SubResource("AnimationLibrary_p7kri")
+}
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
